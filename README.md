@@ -1,0 +1,2 @@
+# Bantumi
+Alpha Beta Pruning
