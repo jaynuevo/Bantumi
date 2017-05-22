@@ -1,24 +1,17 @@
-import java.awt.Image;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Board extends JPanel{
 	
-	JButton p1BowlButton[] = new JButton[7];
-	JButton p2BowlButton[] = new JButton[7];
+	static JButton p1BowlButton[] = new JButton[7];
+	static JButton p2BowlButton[] = new JButton[7];
 	
-	int p1Bowl[] = new int[7];
-	int p2Bowl[] = new int[7];
+	static int p1Bowl[] = new int[7];
+	static int p2Bowl[] = new int[7];
 	
 	JLabel p;
 	
@@ -85,11 +78,13 @@ public class Board extends JPanel{
 	            		
 	            		if(e.getSource() == p1BowlButton[i]){
 	            			moves = p1Bowl[i];
-	            			
 	            			p1Bowl[i] = 0;
           	   				p1BowlButton[i].setText("0");
 	              	   		
-	            			for(int j = 0; j < p1Bowl[i]; j++){
+          	   				Drop drop = new Drop(moves, next);
+          	   				drop.start();
+          	   				
+	            			/*for(int j = 0; j < p1Bowl[i]; j++){
 	              	   		
 	              	   			if (next>6){
 	              	   				for(int k =0; k < moves ; k++){
@@ -108,7 +103,7 @@ public class Board extends JPanel{
 	              	   				moves --;
 	              	   			}
 	              	   		}         	
-	            			break;
+	            			break;*/
 	            			
 	            		}
           			
