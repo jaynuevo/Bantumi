@@ -151,18 +151,10 @@ public class Drop extends Thread {
 		//if(!myTurn){
 			AIEvaluate ai = new AIEvaluate(p1C, p2C);
 			System.out.println("AI TURN");
+			System.out.println("AI's pick is at index " +ai.getIndex());
 		//}
 		
-			for(int i=0; i <6; i++){
-				System.out.println("1 " +p1[i]);
-				//System.out.println(p2[i]);
-			}
-			for(int i=0; i <6; i++){
-				//System.out.println(p1[i]);
-				System.out.println("2 " +p2[i]);
-			}
-		
-		
+			
 		
 	}
 }
