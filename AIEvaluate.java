@@ -12,6 +12,9 @@ public class AIEvaluate {
 	int k=-1;
 	int depth =1;
 	int score[] = new int[7];
+	final int MAX = 1000;
+	final int MIN = -1000;
+	int index;
 	
 	public AIEvaluate(int[] p1, int[] p2) {
 		
@@ -24,12 +27,11 @@ public class AIEvaluate {
 		
 		
 		/////////evaluate each bin
-		int i= checkTurn(depth, p1BowlCopy, p2BowlCopy);
-		System.out.println("MAX INDEX IS" +i);
+		index = checkTurn(depth, p1BowlCopy, p2BowlCopy, MIN, MAX);
 	}
 	
 	
-	public int checkTurn(int d, int p1BowlCopy[], int p2BowlCopy[]){
+	public int checkTurn(int d, int p1BowlCopy[], int p2BowlCopy[], int alpha, int beta){
 		int s=0;
 		boolean win=false;
 		int p1Copy[]; 
@@ -57,26 +59,23 @@ public class AIEvaluate {
 		
 		dpth = d;
 		
+		 int best = MIN;
+		
 		for(int i=0; i<6; i++){
 			
 			
 			moves = p2Copy[i];
-			System.out.println("moves avail is " +moves +"for i = " +i);
-			//System.out.println("BOWL LOOP moves is "+moves );
 			next = i + 1;
 			
 			
 			
 			if(p2Copy[i] == 0){
-				System.out.println("empty");
 				scoreList.add(-1);
 				continue;
 			}
 			
 			else{
 				p2Copy[i] = 0;
-				//System.out.println("MOVES IS " +moves);
-				//System.out.println("NEXT IS "+next);
 				
 				for (int j = 0 ; j<moves; j++){
 				
@@ -148,7 +147,6 @@ public class AIEvaluate {
 	  	   						}
 	  	   						
 	  	   						if(next == 6){
-	  	   						System.out.println("WON SOMETHING HOHO");
 	  	   							p2Copy[next] += 1;
 	  	   							win =true;
 	  	   							s=10;
@@ -159,7 +157,6 @@ public class AIEvaluate {
 	  	   					else{
 	  	   						
 	  	   						if(next == 6){
-	  	   							System.out.println("WON SOMETHING");
 	  	   							p2Copy[next] += 1;
 	  	   							win =true;
 	  	   							s=10;
@@ -174,8 +171,7 @@ public class AIEvaluate {
 	  	   					
 	  	   				}
 	  	   				
-	  	   				else{
-	  	   				//	System.out.println("NOT LAST MOVE next is " +next +" move " +moves);
+	  	   				else{  	  
 	  	   					p2Copy[next] = p2Copy[next] +1 ;
 	  	   					next++;	
 	  	   				}
@@ -185,7 +181,6 @@ public class AIEvaluate {
 				
 				
 				if(win){
-					System.out.println("WIN TRUE HERE MYTURN");
 					scoreList.add(s);
 					for(int h=0; h <6; h++){
 						p1Copy[h] = c1[h];
@@ -197,12 +192,10 @@ public class AIEvaluate {
 				}
 				
 				else{
-					System.out.println("WIN FALSE MYTURN");
 					d++;
 				
 					
 					if(d>3){
-						System.out.println("DEPTH IS 3");
 						scoreList.add(s);
 						for(int h=0; h <6; h++){
 							p1Copy[h] = c1[h];
@@ -216,23 +209,33 @@ public class AIEvaluate {
 					}
 					
 					else{
-						System.out.println("DEPTH IS NOT 3 but "+d);
 					/////////check opponent's move
-					s = checkOpponent(d, p1Copy, p2Copy);
-					//System.out.println("S IS "+s);
+					s = checkOpponent(d, p1Copy, p2Copy, alpha, beta);
+
 					scoreList.add(s);
 					}
+					
 					for(int h=0; h <6; h++){
 						p1Copy[h] = c1[h];
 						p2Copy[h] = c2[h];
 					}
 
 					
+					if (s > alpha) {
+						alpha = s;
+					}
 					
 					win = false;
 					s=0;
 					d = dpth;
-					continue;
+					
+					/*    ALPHA BETA PRUNING    */
+					if (beta <= alpha){
+						System.out.println("PRRRUUUUUUUUUUUNED");
+						break;
+					}
+					else
+						continue;
 				}
 				
 		
@@ -247,23 +250,25 @@ public class AIEvaluate {
 		}
 		
 		if(d==3){
-			System.out.println("NAG 3");
+			
 			int maxIndex = scoreList.indexOf(Collections.max(scoreList));
+			
 			for(int i: scoreList){
 				System.out.println(" + " +i);
 			}
 			System.out.println("MAX IS " +scoreList.get(maxIndex));
-			return scoreList.get(maxIndex);
-			//System.out.println("MAX IS" +scoreList.get(maxIndex));
-			//return maxIndex;
+			
+			return alpha;
+
 		}
 		 
 		else{
-			System.out.println("DAPAT  "+d);
+			
 			int maxIndex = scoreList.indexOf(Collections.max(scoreList));
-		//return scoreList.get(maxIndex);
+
 			System.out.println("MAX IS" +scoreList.get(maxIndex));
 			return maxIndex;
+
 		}
 	}
 	
@@ -272,7 +277,7 @@ public class AIEvaluate {
 	
 	
 	
-	public int checkOpponent(int d, int p1BowlCopy[], int p2BowlCopy[]){
+	public int checkOpponent(int d, int p1BowlCopy[], int p2BowlCopy[], int alpha, int beta){
 		int s=0;
 		boolean win=false;
 		int p1Copy[]; 
@@ -298,7 +303,7 @@ public class AIEvaluate {
 			c2[i] = p2Copy[i];
 		}
 		
-		
+		 int best = MAX;
 		
 		ArrayList<Integer> scoreList = new ArrayList<Integer>();
 		dpth = d;
@@ -306,18 +311,13 @@ public class AIEvaluate {
 		for(int i=0; i<6; i++){
 			
 			if(p1Copy[i] == 0){
-				System.out.println("empty man");
 				scoreList.add(-1);
 				continue;
 			}
 			
 			else{
 				moves = p1Copy[i];
-				System.out.println("moves avail in here is " +moves +"for i = " +i);
-				next = i + 1;
-		
-		
-		
+				next = i + 1;	
 		
 				for (int j = 0 ; j<moves; j++){			
 			
@@ -332,7 +332,7 @@ public class AIEvaluate {
 					else{
 	   			
 						if(moves-j == 1){///////	IF LAST MOVE
-						//	System.out.println("ENTERED LAST MOVE .Depth is " +d +" Next is " +next +" Move is " +moves);
+						
 							if(p1Copy[next] == 0){
 								p1Copy[next] = p1Copy[next] +1 ;
 					
@@ -397,7 +397,6 @@ public class AIEvaluate {
 							else{
 	  	   						
 	  	   						if(next == 6){
-	  	   							System.out.println("LOST SOMETHING");
 	  	   							p1Copy[next] += 1;
 	  	   							win =true;
 	  	   							s=-10;
@@ -418,7 +417,6 @@ public class AIEvaluate {
 				}
 			
 					if(win){
-						System.out.println("OPPONENT WON");
 						scoreList.add(s);
 						for(int h=0; h <6; h++){
 							p1Copy[h] = c1[h];
@@ -431,21 +429,35 @@ public class AIEvaluate {
 					}
 					
 					else{
-						System.out.println("OPPONENT DIDNT WIN");
 						d++;
 						
 						/////////check opponent's move
-						s = checkTurn(d, p1Copy, p2Copy);
-						System.out.println("IT RETURNED "+s);
+						s = checkTurn(d, p1Copy, p2Copy,alpha,beta);
+
 						scoreList.add(s);
 						for(int h=0; h <6; h++){
 							p1Copy[h] = c1[h];
 							p2Copy[h] = c2[h];
 						}
+						
+						if (s < beta) {
+							beta = s;
+						}
+						
+						
+						
 						win = false;
 						s=0;
 						d = dpth;
-						continue;
+						
+						
+						/*      ALPHA BETA PRUNING      */
+						if (beta <= alpha){
+							System.out.println("PRRRUUUUUUUUUUUNED");
+				             break;
+						}
+						else
+							 continue;
 					}
 				
 				}
@@ -453,8 +465,10 @@ public class AIEvaluate {
 	
 		
 		int minIndex = scoreList.indexOf(Collections.min(scoreList));
-		System.out.println("MIN IS " +scoreList.get(minIndex));
-		return scoreList.get(minIndex);
+		return beta;
 		
 }
+	public int getIndex(){
+		return index;
+	}
 }
