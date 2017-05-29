@@ -84,6 +84,7 @@ public class AIEvaluate {
   	   					if (k<6){
   	   						p1Copy[k] = p1Copy[k] +1 ;
   	   					}
+  	   					//s=3;
   	   				}
 				
 					else{
@@ -187,55 +188,64 @@ public class AIEvaluate {
 						p2Copy[h] = c2[h];
 					}
 					win = false;
+					
+					if (s > alpha) {
+		                  alpha = s;
+		              	if (beta <= alpha){
+							System.out.println("PRRRUUUUUUUUUUUNED");
+							break;
+						}
+					}
+					
 					s=0;
 					continue;
 				}
 				
 				else{
-					d++;
+						d++;
 				
 					
-					if(d>3){
-						scoreList.add(s);
+						if(d>3){
+							scoreList.add(s);
+							for(int h=0; h <6; h++){
+								p1Copy[h] = c1[h];
+								p2Copy[h] = c2[h];
+							}
+							win = false;
+							s=0;
+							d = dpth;
+							return s;
+							//continue;
+						}
+					
+						else{
+							/////////check opponent's move
+							s = checkOpponent(d, p1Copy, p2Copy, alpha, beta);
+
+							scoreList.add(s);
+						}
+					
 						for(int h=0; h <6; h++){
 							p1Copy[h] = c1[h];
 							p2Copy[h] = c2[h];
 						}
+
+					
+						if (s > alpha) {
+							alpha = s;
+						}
+					
 						win = false;
 						s=0;
 						d = dpth;
-						//return s;
-						continue;
-					}
 					
-					else{
-					/////////check opponent's move
-					s = checkOpponent(d, p1Copy, p2Copy, alpha, beta);
-
-					scoreList.add(s);
-					}
-					
-					for(int h=0; h <6; h++){
-						p1Copy[h] = c1[h];
-						p2Copy[h] = c2[h];
-					}
-
-					
-					if (s > alpha) {
-						alpha = s;
-					}
-					
-					win = false;
-					s=0;
-					d = dpth;
-					
-					/*    ALPHA BETA PRUNING    */
-					if (beta <= alpha){
-						System.out.println("PRRRUUUUUUUUUUUNED");
-						break;
-					}
-					else
-						continue;
+						/*    ALPHA BETA PRUNING    */
+						if (beta <= alpha){
+							System.out.println("PRRRUUUUUUUUUUUNED");
+							break;
+						}
+						else
+							continue;
 				}
 				
 		
@@ -423,6 +433,18 @@ public class AIEvaluate {
 							p2Copy[h] = c2[h];
 						}
 						win = false;
+						
+						
+						
+						if (s < beta) {
+			                  beta = s;
+			              	if (beta <= alpha){
+								System.out.println("PRRRUUUUUUUUUUUNED");
+								break;
+							}
+						}
+						
+						
 						s=0;
 						d = dpth;
 						continue;
