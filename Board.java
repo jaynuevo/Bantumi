@@ -14,11 +14,13 @@ import javax.swing.JPanel;
 
 public class Board extends JPanel{
 	
-	JButton p1BowlButton[] = new JButton[7];
-	JButton p2BowlButton[] = new JButton[7];
+	static JButton p1BowlButton[] = new JButton[7];
+	static JButton p2BowlButton[] = new JButton[7];
 	
-	int p1Bowl[] = new int[7];
-	int p2Bowl[] = new int[7];
+	static int p1Bowl[] = new int[7];
+	static int p2Bowl[] = new int[7];
+	
+	static boolean playerTurn = true;
 	
 	JLabel p;
 	
@@ -41,8 +43,9 @@ public class Board extends JPanel{
 			add(p1BowlButton[i]);
 			x+=100;
 		}
+		
 		p1BowlButton[6] = new JButton("0");
-		p1BowlButton[6].setBounds(700, 225, 45, 45);
+		p1BowlButton[6].setBounds(700, 225, 50, 45);
 		p1BowlButton[6].setVisible(true);
 		add(p1BowlButton[6]);
 
@@ -52,12 +55,13 @@ public class Board extends JPanel{
 			p2BowlButton[i] = new JButton("3");
 			p2BowlButton[i].setBounds(x, 150, 45, 45);
 			p2BowlButton[i].setVisible(true);
+			p2BowlButton[i].setEnabled(false);
 			add(p2BowlButton[i]);
 			x+=100;
 		}
 		
 		p2BowlButton[6] = new JButton("0");
-		p2BowlButton[6].setBounds(60, 225, 45, 45);
+		p2BowlButton[6].setBounds(60, 225, 50, 45);
 		p2BowlButton[6].setVisible(true);
 		add(p2BowlButton[6]);
 	//////////////SET CONTENTS//////////////////////
@@ -73,73 +77,69 @@ public class Board extends JPanel{
 		p2Bowl[6] = 0;
 	}
 
-	public void setActions(){
+	public static void setActions(){
 		
-		for(int i=0; i<6; i++){
-			p1BowlButton[i].addActionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	            	 	
-	            	for(int i=0; i<p1BowlButton.length; i++){
-	            		int next = i + 1; 
-	            		int moves;
-	            		
-	            		if(e.getSource() == p1BowlButton[i]){
-	            			moves = p1Bowl[i];
-	            			
-	            			p1Bowl[i] = 0;
-          	   				p1BowlButton[i].setText("0");
-	              	   		
-	            			for(int j = 0; j < p1Bowl[i]; j++){
-	              	   		
-	              	   			if (next>6){
-	              	   				for(int k =0; k < moves ; k++){
-	              	   					p2Bowl[k] = p2Bowl[k] +1 ;
-	              	   					p2BowlButton[k].setText(Integer.toString(p2Bowl[k]));
-	              	   				}
-	              	   				break;
-	              	   			}
-	              	   			
-	              	   			
-	              	   			else{
-	              	   			
-	              	   				p1Bowl[next] = p1Bowl[next] +1 ;
-	              	   				p1BowlButton[next].setText(Integer.toString(p1Bowl[next]));
-	              	   				next++;	
-	              	   				moves --;
-	              	   			}
-	              	   		}         	
-	            			break;
-	            			
-	            		}
-          			
-	            	}
-	            }
-	        });
+		if (playerTurn){
 			
+			System.out.println("Player's turn");
 			
-			
-			
-			/*p2BowlButton[i].addActionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	            	 	
-	            	for(int i=0; i<p2BowlButton.length; i++){
-	            		int next = i + 1;
-	            		
-	            		if(e.getSource() == p2BowlButton[i]){
-	            			  for(int j = 0; j < p2Bowl[i]; j++){
-	       	            	   		p2Bowl[next] = p2Bowl[next] +1 ;
-	       	            	   		p2BowlButton[next].setText(Integer.toString(p2Bowl[next]));
-	       	            	   		next++;
-	       	               }
-	            		}
-          			
-	            	}
-	            }
-	        });*/
-			
-			
-			
+			for(int i=0; i<6; i++){
+				p1BowlButton[i].addActionListener(new ActionListener() {
+		            public void actionPerformed(ActionEvent e) {
+		            	 	
+		            	for(int i=0; i<p1BowlButton.length; i++){
+		            		int next = i + 1; 
+		            		int moves;
+		            		
+		            		if(e.getSource() == p1BowlButton[i]){
+		            			if (p1Bowl[i]==0){
+		            				System.out.println("Zero rocks");
+		            			}
+		            			
+		            			else{
+		            				moves = p1Bowl[i];
+			            			p1Bowl[i] = 0;
+		          	   				p1BowlButton[i].setText("0");
+			              	   		
+		          	   				Drop drop = new Drop(moves, next);
+		          	   				drop.start();
+		            			}
+		            		}
+		            	}
+		            }
+		        });
+			}
 		}
+		
+		///****** AI Turn ********///
+		else{
+			System.out.println("AI's turn");
+			
+			int[] p1 = new int[7];
+			int[] p2 = new int[7];
+			
+			for (int i = 0; i<7; i++){
+				p1[i] = Board.p1Bowl[i];
+				p2[i] = Board.p2Bowl[i];
+			}
+			
+			AIEvaluate ai = new AIEvaluate(p1, p2);
+			System.out.println("AI TURN");
+			System.out.println("AI's pick is at index " + ai.getIndex() + " with rocks " + Board.p2Bowl[ai.getIndex()]);
+		
+		            		
+		            		int moves;
+		            		
+		            			moves = Board.p2Bowl[ai.getIndex()];
+		            			p2Bowl[ai.getIndex()] = 0;
+	          	   				p2BowlButton[ai.getIndex()].setText("0");
+	          	   				
+	          	   			int next = ai.getIndex() + 1; 
+	          	   			//System.out.println("BOARD NEXT: " + next);
+	          	   			//System.out.println("MOVES: " + moves);
+	          	   				AIdrop aidrop = new AIdrop(moves, next);
+	          	   				aidrop.start();
+			}
 	}
 
 }
