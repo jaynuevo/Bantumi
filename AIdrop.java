@@ -22,9 +22,11 @@ public class AIdrop extends Thread{
 					
 			if(Game.p1Bowl[6] < Game.p2Bowl[6])
 				Win.winLabel.setIcon(new ImageIcon(getClass().getResource("losebg.png")));
-			else
+			else if(Game.p1Bowl[6] == Game.p2Bowl[6])
+				Win.winLabel.setIcon(new ImageIcon(getClass().getResource("tiebg.png")));
+			else if(Game.p1Bowl[6] > Game.p2Bowl[6])
 				Win.winLabel.setIcon(new ImageIcon(getClass().getResource("winbg.png")));
-							
+				
 			test.switchCard("Win");
 			test.setContentPane(test.winPanel.winLabel);
 		}
