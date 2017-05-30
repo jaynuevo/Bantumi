@@ -1,4 +1,3 @@
 # Bantumi
-Alpha Beta Pruning
 
-Minimax w/out alpha beta 
+Ada ha zip file an pictures sorry na huhuhuhuhuhuhu
