@@ -14,6 +14,7 @@ public class Test extends JFrame{
 	public final Game gamePanel;
 	public final Menu menuPanel;
 	public final Win winPanel;
+	public final Exit exitPanel;
 	private final JPanel jpanel;
 	private final CardLayout layout;
 	
@@ -44,6 +45,10 @@ public class Test extends JFrame{
 		winPanel.setFocusable(false);
 		winPanel.setOpaque(false);
 		
+		exitPanel = new Exit(this);
+		exitPanel.setFocusable(false);
+		exitPanel.setOpaque(false);
+		
 		layout = new CardLayout();
 		
 		jpanel = new JPanel();
@@ -53,6 +58,7 @@ public class Test extends JFrame{
 		
 		jpanel.add(instructionPanel, "Instruction");
 		jpanel.add(winPanel, "Win");
+		jpanel.add(exitPanel, "Exit");
 		jpanel.add(creditsPanel, "Credits");
 		jpanel.add(gamePanel, "Game");
 		jpanel.add(menuPanel, "Menu");

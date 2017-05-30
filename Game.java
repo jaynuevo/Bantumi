@@ -178,7 +178,9 @@ public class Game extends JPanel{
 									
 									if(p1Bowl[6] < p2Bowl[6])
 										Win.winLabel.setIcon(new ImageIcon(getClass().getResource("losebg.png")));
-									else
+									else if(p1Bowl[6] == p2Bowl[6])
+										Win.winLabel.setIcon(new ImageIcon(getClass().getResource("tiebg.png")));
+									else if(p1Bowl[6] > p2Bowl[6])
 										Win.winLabel.setIcon(new ImageIcon(getClass().getResource("winbg.png")));
 									
 									test.switchCard("Win");
@@ -206,7 +208,9 @@ public class Game extends JPanel{
 						
 				if(p1Bowl[6] < p2Bowl[6])
 					Win.winLabel.setIcon(new ImageIcon(getClass().getResource("losebg.png")));
-				else
+				else if(p1Bowl[6] == p2Bowl[6])
+					Win.winLabel.setIcon(new ImageIcon(getClass().getResource("tiebg.png")));
+				else if(p1Bowl[6] > p2Bowl[6])
 					Win.winLabel.setIcon(new ImageIcon(getClass().getResource("winbg.png")));
 								
 				test.switchCard("Win");

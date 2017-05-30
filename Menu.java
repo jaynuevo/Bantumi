@@ -72,7 +72,8 @@ public class Menu extends JPanel{
 				test.switchCard("Credits");
 				test.setContentPane(test.creditsPanel.creditsLabel);
 			}else if(event.getSource() == close){
-				System.exit(0);
+				test.switchCard("Exit");
+				test.setContentPane(test.exitPanel.exitLabel);
 			}
 		}
 	}
