@@ -1,28 +1,84 @@
-import java.awt.Color;
-import java.awt.Font;
+//package main;
 
-import javax.swing.JFrame;
+import java.awt.*;
+import javax.swing.*;
 
+//import view.Credits;
+//import view.Instruction;
+//import controller.Menu;
 
-public class Test {
+public class Test extends JFrame{
+	private static Test instance;
+	public final Instruction instructionPanel;
+	public final Credits creditsPanel;
+	public final Game gamePanel;
+	public final Menu menuPanel;
+	public final Win winPanel;
+	private final JPanel jpanel;
+	private final CardLayout layout;
 	
+	public Test(){
+		setUndecorated(true);
+        setLayout(null);
+        setSize(750, 500);
+        setLocationRelativeTo(null);
+        setResizable(false);
 		
-		public static void main(String[] args) {
-			JFrame f = new JFrame();
-			Board b = new Board();		
-			
-			
-			f.add(b);
-			//f.add(o);  
-			
-			
-			f.setTitle("Bantumi");
+		instructionPanel = new Instruction(this);
+		instructionPanel.setFocusable(false);
+		instructionPanel.setOpaque(false);
+		
+		creditsPanel = new Credits(this);
+		creditsPanel.setFocusable(false);
+		creditsPanel.setOpaque(false);
+		
+		gamePanel = new Game(this);
+		gamePanel.setFocusable(false);
+		gamePanel.setOpaque(false);
+		
+		menuPanel = new Menu(this);
+		menuPanel.setFocusable(false);
+		menuPanel.setOpaque(false);
+		
+		winPanel = new Win(this);
+		winPanel.setFocusable(false);
+		winPanel.setOpaque(false);
+		
+		layout = new CardLayout();
+		
+		jpanel = new JPanel();
+        jpanel.setLocation(0,0);
+		jpanel.setSize(750,500);
+		jpanel.setLayout(layout);
+		
+		jpanel.add(instructionPanel, "Instruction");
+		jpanel.add(winPanel, "Win");
+		jpanel.add(creditsPanel, "Credits");
+		jpanel.add(gamePanel, "Game");
+		jpanel.add(menuPanel, "Menu");
+		add(jpanel);
+		
+		setVisible(true);
+	}
+	
+	public static Test getInstance(){
+        if(instance == null)
+            instance = new Test();
+        return instance; 
+    }
 
-				f.setSize(800,500);
-				f.setLocationRelativeTo(null);
-				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				f.setResizable(false);
-				f.setVisible(true);
-			//frame.add(menu);
-		}
+    public void switchCard(String string){
+		layout.show(jpanel, string);
+    }
+	
+	public static void main(String[] args){
+		Test test = new Test();
+		test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		test.setSize(750, 500);
+		test.setResizable(false);
+		test.setLocationRelativeTo(null);
+		test.setContentPane(test.menuPanel.menuLabel);
+		test.setVisible(true);
+		test.setLayout(null);
+	}
 }
