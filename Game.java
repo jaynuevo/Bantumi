@@ -161,61 +161,48 @@ public class Game extends JPanel{
 	}
 	
 	public void setActions(){	
+		
 		if(playerTurn){
-			yTurn.setVisible(true);
-			oTurn.setVisible(false);
-			for(int i=0; i<6; i++){
-				p1BowlButton[i].addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						for(int i=0; i<p1BowlButton.length; i++){
-							int next = i + 1; 
-							int moves;
-							
-							if(e.getSource() == p1BowlButton[i]){
-								/*if(p1Bowl[0] == 0 && p1Bowl[1] == 0 && p1Bowl[2] == 0 && p1Bowl[3] == 0 && p1Bowl[4] == 0 && p1Bowl[5] == 0){
-									Win.yField.setText(Integer.toString(p1Bowl[6]));
-									Win.oField.setText(Integer.toString(p2Bowl[6]));
+			
+			/*for (int i = 0; i < 6; i++){
+				System.out.println("Player 1: " +p1Bowl[i]);
+			}
+			
+			for (int i = 0; i < 6; i++){
+				System.out.println("AI: " + p2Bowl[i]);
+			}*/
+			
+			
+				yTurn.setVisible(true);
+				oTurn.setVisible(false);
+				for(int i=0; i<6; i++){
+					
+					p1BowlButton[i].addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							for(int i=0; i<p1BowlButton.length; i++){
+								int next = i + 1; 
+								int moves;
+								
+								if(e.getSource() == p1BowlButton[i]){
 									
-									if(p1Bowl[6] < p2Bowl[6])
-										Win.winLabel.setIcon(new ImageIcon(getClass().getResource("losebg.png")));
-									else if(p1Bowl[6] == p2Bowl[6])
-										Win.winLabel.setIcon(new ImageIcon(getClass().getResource("tiebg.png")));
-									else if(p1Bowl[6] > p2Bowl[6])
-										Win.winLabel.setIcon(new ImageIcon(getClass().getResource("winbg.png")));
-									
-									test.switchCard("Win");
-									test.setContentPane(test.winPanel.winLabel);
-								}else if(p1Bowl[i] == 0){
-								}else{*/
-									moves = p1Bowl[i];
-									p1Bowl[i] = 0;
-									p1BowlField[i].setText("0");
-									p1BowlButton[i].setIcon(new ImageIcon(getClass().getResource("bowl0.png")));
-									p1BowlButton[i].setRolloverIcon(new ImageIcon(getClass().getResource("bowl0hover.png")));
-				
-									Drop drop = new Drop(moves, next, test);
-									drop.start();
-								//}
+									if (p1Bowl[i]!=0){
+										moves = p1Bowl[i];
+										//p1Bowl[i] = 0;
+										p1BowlField[i].setText("0");
+										p1BowlButton[i].setIcon(new ImageIcon(getClass().getResource("bowl0.png")));
+										p1BowlButton[i].setRolloverIcon(new ImageIcon(getClass().getResource("bowl0hover.png")));
+					
+										Drop drop = new Drop(moves, next, i, test);
+										drop.start();
+									}
+								}
 							}
 						}
-					}
-				});
-			}	
+					
+					});
+				}	
+			
 		}else{			
-			/*if(p2Bowl[0] == 0 && p2Bowl[1] == 0 && p2Bowl[2] == 0 && p2Bowl[3] == 0 && p2Bowl[4] == 0 && p2Bowl[5] == 0){
-				Win.yField.setText(Integer.toString(p1Bowl[6]));
-				Win.oField.setText(Integer.toString(p2Bowl[6]));
-						
-				if(p1Bowl[6] < p2Bowl[6])
-					Win.winLabel.setIcon(new ImageIcon(getClass().getResource("losebg.png")));
-				else if(p1Bowl[6] == p2Bowl[6])
-					Win.winLabel.setIcon(new ImageIcon(getClass().getResource("tiebg.png")));
-				else if(p1Bowl[6] > p2Bowl[6])
-					Win.winLabel.setIcon(new ImageIcon(getClass().getResource("winbg.png")));
-								
-				test.switchCard("Win");
-				test.setContentPane(test.winPanel.winLabel);
-			}else{*/
 				yTurn.setVisible(false);
 				oTurn.setVisible(true);
 				
@@ -237,12 +224,13 @@ public class Game extends JPanel{
 				p2BowlButton[ai.getIndex()].setIcon(new ImageIcon(getClass().getResource("bowl0.png")));
 				p2BowlButton[ai.getIndex()].setRolloverIcon(new ImageIcon(getClass().getResource("bowl0hover.png")));	
 				
+				int position = ai.getIndex();
 				int next = ai.getIndex() + 1; 
 				
-				AIdrop aidrop = new AIdrop(moves, next, test);
+				AIdrop aidrop = new AIdrop(moves, next, position, test);
 				aidrop.start();
-			//}
-		}
+			}
+			
 	}
 	
 	public void clearAll(){

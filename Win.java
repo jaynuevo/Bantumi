@@ -66,6 +66,7 @@ public class Win extends JPanel{
 	private class Handler implements ActionListener{
 		public void actionPerformed(ActionEvent event){
 			if(event.getSource() == replaybutton){
+				Game.playerTurn = true;
 				test.gamePanel.clearAll();
 				test.switchCard("Game");
 				test.setContentPane(test.gamePanel.gameLabel);

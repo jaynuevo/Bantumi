@@ -63,12 +63,12 @@ public class AIEvaluate{
 				
 				for (int j = 0 ; j<moves; j++){
 					if (next>6){
-  	   					k += 1; 
+						k += 1; 
   	   					if (k<6){
   	   						p1Copy[k] = p1Copy[k] +1 ;
   	   					}
-  	   					else if(k==6){
-  	   						//p2Copy[h] = p2Copy[h]+1;
+  	   					
+  	   					else{
   	   						next = 0;
   	   						k=-1;
   	   						j--;

@@ -63,6 +63,7 @@ public class Menu extends JPanel{
 	private class Handler implements ActionListener{
 		public void actionPerformed(ActionEvent event){
 			if(event.getSource() == playbutton){
+				Game.playerTurn = true;
 				test.switchCard("Game");
 				test.setContentPane(test.gamePanel.gameLabel);
 			}else if(event.getSource() == instructionbutton){
